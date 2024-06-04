@@ -162,13 +162,13 @@
 
     network_adapters {
           model   = "virtio"
-          bridge  = "vmbr1"
+          bridge  = "vmbr0"
           firewall = true
     }
 
     network_adapters {
           model   = "virtio"
-          bridge  = "vmbr2"
+          bridge  = "vmbr0"
           firewall = true
     }
 
@@ -177,7 +177,7 @@
       disk_size         = "10G"
       storage_pool      = var.vm_storage_pool
       storage_pool_type = var.vm_storage_pool_type
-      format            = "qcow2"
+      format            = "raw" # TODO: expose as variable
     }
 
     iso_file              = var.iso_file
@@ -204,7 +204,9 @@
 
       "n<enter><wait2>vtnet0<enter><wait2>vtnet1<enter><wait2>", # Setup WAN and LAN interfaces
 
-      "y<enter><wait3m>", # Increase the wait time if your pfsense install is slow
+      "y<enter><wait1.5m>", # Increase the wait time if your pfsense install is slow
+      
+      "14<enter>y<enter>n<enter><wait2>",
 
       "2<enter>1<enter><wait1>n<enter><wait1>${var.wan_ip}<enter><wait2>${var.wan_mask}<enter>", # Setup WAN IP addresses
 
@@ -213,6 +215,7 @@
       "2<enter>2<enter>n<enter>${var.lan_ip}<enter><wait2>${var.lan_mask}<enter>", # Setup LAN IP addresses
 
       "<enter><wait1>n<enter><wait1><enter><5><enter>n<enter><wait1>n<enter><wait1><enter>" # Complete LAN setup and finalize configuration
+
   ] 
 }
 
